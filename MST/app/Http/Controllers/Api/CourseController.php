@@ -52,16 +52,7 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'duration' => 'required|integer',
-            'difficulty_level' => 'required|string',
-            'category_id' => 'required|integer|exists:categories,id',
-            'sub_category_id' => 'required|integer|exists:sub_categories,id',
-            'status' => 'required|string',
-        ]);
-        return response()->json($this->courseRepository->create($validated), 201);
+        return response()->json($this->courseRepository->create($request->validated()), 201);
     }
 
     /**
@@ -110,19 +101,12 @@ class CourseController extends Controller
      *     @OA\Response(response=200, description="Course updated")
      * )
      */
-    public function update(Request $request, $id)
+    
+        public function update(CourseRequest $request, $id)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'duration' => 'required|integer',
-            'difficulty_level' => 'required|string',
-            'category_id' => 'required|integer|exists:categories,id',
-            'sub_category_id' => 'required|integer|exists:sub_categories,id',
-            'status' => 'required|string',
-        ]);
-        return response()->json($this->courseRepository->update($id, $validated));
+        return response()->json($this->courseRepository->update($id, $request->validated()));
     }
+    
 
     /**
      * @OA\Delete(
@@ -143,4 +127,5 @@ class CourseController extends Controller
         $this->courseRepository->delete($id);
         return response()->json(null, 204);
     }
+    
 }
