@@ -13,6 +13,8 @@ Route::get('/user', function (Request $request) {
 
 
 Route::apiResource('categories', CategoryController::class);
+Route::get('categories/{id}/children', [CategoryController::class, 'getChildren']);
+
 Route::apiResource('courses', CourseController::class);
 Route::apiResource('tags', TagController::class);
 
