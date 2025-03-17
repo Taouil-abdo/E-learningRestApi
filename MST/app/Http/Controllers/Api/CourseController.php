@@ -43,7 +43,6 @@ class CourseController extends Controller
      *             @OA\Property(property="duration", type="integer", example=50),
      *             @OA\Property(property="difficulty_level", type="string", example="Intermediate"),
      *             @OA\Property(property="category_id", type="integer", example=1),
-     *             @OA\Property(property="sub_category_id", type="integer", example=1),
      *             @OA\Property(property="status", type="string", example="open")
      *         )
      *     ),
@@ -94,7 +93,6 @@ class CourseController extends Controller
      *             @OA\Property(property="duration", type="integer", example=60),
      *             @OA\Property(property="difficulty_level", type="string", example="Advanced"),
      *             @OA\Property(property="category_id", type="integer", example=1),
-     *             @OA\Property(property="sub_category_id", type="integer", example=1),
      *             @OA\Property(property="status", type="string", example="in progress")
      *         )
      *     ),
