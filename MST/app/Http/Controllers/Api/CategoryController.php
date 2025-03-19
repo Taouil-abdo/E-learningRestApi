@@ -148,4 +148,7 @@ class CategoryController extends Controller
      {
          return response()->json($this->categoryRepository->getChildren($id));
      }
+
+
+
  }
