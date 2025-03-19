@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 use OpenApi\Annotations as OA;
 use App\Repositories\TagRepository;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreTagRequest;
+use App\Http\Requests\UpdateTagRequest;
 
 
 class TagController extends Controller
@@ -43,12 +45,12 @@ class TagController extends Controller
      *     @OA\Response(response=201, description="tag created")
      * )
      */
-    public function store(Request $request)
+    public function store(StoreTagRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
-        return response()->json($this->tagRepository->create($validated), 201);
+        // $validated = $request->validate([
+        //     'name' => 'required|string|max:255',
+        // ]);
+        return response()->json($this->tagRepository->create($request->validated()), 201);
     }
 
     /**
@@ -91,13 +93,10 @@ class TagController extends Controller
      *     @OA\Response(response=200, description="tag updated")
      * )
      */
-    public function update(Request $request, $id)
+    public function update(UpdateTagRequest $request, $id)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-        ]);
-        return response()->json($this->tagRepository->update($id, $validated));
+        
+        return response()->json($this->tagRepository->update($id, $request->validated()));
     }
 
     /**
