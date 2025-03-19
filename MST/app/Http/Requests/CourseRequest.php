@@ -18,12 +18,14 @@ class CourseRequest extends FormRequest
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'duration' => 'required|integer|min:1',
-            'difficulty_level' => 'required|string|in:beginner,intermediate,advanced',
-            'status' => 'required|string|in:published,draft',
+            'difficulty_level' => 'required|string',
+            'status' => 'required|string',
             'category_id' => 'required|exists:categories,id',
-            'teacher_id' => 'required|exists:users,id',
             'tags' => 'nullable|array',
             'tags.*' => 'exists:tags,id',
         ];
     }
 }
+
+    
+
