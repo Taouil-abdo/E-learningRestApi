@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('difficulty_level');
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('teacher_id');
-            $table->string('status');
+            $table->enum ('status', ['accepted', 'refuse', 'pendding'])->default('pendding');
             $table->timestamps();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->foreign('teacher_id')->references('id')->on('users')->onDelete('cascade');
