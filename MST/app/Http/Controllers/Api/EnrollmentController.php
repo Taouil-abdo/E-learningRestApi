@@ -40,6 +40,7 @@ class EnrollmentController extends Controller
      */
     public function enrollStudent(Request $request)
     {
+        
         $validated = $request->validate([
             'student_id' => 'required|exists:students,id',
             'course_id' => 'required|exists:courses,id',

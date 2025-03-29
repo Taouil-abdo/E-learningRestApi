@@ -1,11 +1,14 @@
 <?php
 namespace App\Http\Controllers\Api;
 
+use Exception;
 use Illuminate\Http\Request;
 use OpenApi\Annotations as OA;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CourseRequest;
-// use App\Repositories\CourseRepository;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\CourseResource;
 use App\Repositories\CourseRepositoryInterface;
 
 class CourseController extends Controller
@@ -27,7 +30,12 @@ class CourseController extends Controller
      */
     public function index()
     {
-        return $this->courseRepository->all();
+        try {
+            return $this->courseRepository->all();
+        } catch (Exception $e) {
+            Log::error('Error fetching courses', ['error' => $e->getMessage()]);
+            return response()->json(['error' => 'Failed to fetch courses'], 500);
+        }
     }
 
     /**
@@ -51,12 +59,26 @@ class CourseController extends Controller
      *     @OA\Response(response=201, description="Course created")
      * )
      */
-    public function store(CourseRequest $request)
-    {
-        $data = $request->validated();
-        $data['teacher_id'] = auth()->id();
-        return response()->json($this->courseRepository->create($data), 201);
+
+     public function store(CourseRequest $request)
+{
+    // dd($request->all());
+    $data = $request->validated();
+
+    // $data['teacher_id'] = Auth::id(); 
+    Log::info('Request Data:', $data); 
+    try {
+        $course = $this->courseRepository->addNewCourse($data);
+        Log::info('Course Created:', $course->toArray()); 
+
+        return response()->json(['success' => true,'message' => "Course created successfully",
+            'data' => new CourseResource($course)], 201);
+    } catch (\Exception $e) {
+        Log::error("Error creating course: " . $e->getMessage());
+        return response()->json(['success' => false,'message' => "Course creation failed"], 500);
     }
+}
+
 
     /**
      * @OA\Get(
@@ -74,7 +96,12 @@ class CourseController extends Controller
      */
     public function show($id)
     {
-        return $this->courseRepository->find($id);
+        try {
+            return $this->courseRepository->find($id);
+        } catch (Exception $e) {
+            Log::error('Error fetching course details', ['error' => $e->getMessage()]);
+            return response()->json(['error' => 'Failed to fetch course details'], 500);
+        }
     }
 
     /**
@@ -106,7 +133,12 @@ class CourseController extends Controller
      */
     public function update(CourseRequest $request, $id)
     {
-        return response()->json($this->courseRepository->update($id, $request->validated()));
+        try {
+            return response()->json($this->courseRepository->update($id, $request->validated()));
+        } catch (Exception $e) {
+            Log::error('Error updating course', ['error' => $e->getMessage()]);
+            return response()->json(['error' => 'Failed to update course'], 500);
+        }
     }
 
     /**
@@ -125,7 +157,12 @@ class CourseController extends Controller
      */
     public function destroy($id)
     {
-        $this->courseRepository->delete($id);
-        return response()->json(null, 204);
+        try {
+            $this->courseRepository->delete($id);
+            return response()->json(null, 204);
+        } catch (Exception $e) {
+            Log::error('Error deleting course', ['error' => $e->getMessage()]);
+            return response()->json(['error' => 'Failed to delete course'], 500);
+        }
     }
 }
