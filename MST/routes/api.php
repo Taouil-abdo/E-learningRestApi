@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\VideoController;
 use App\Http\Controllers\Api\CourseController;
+use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\EnrollmentController;
@@ -41,10 +42,6 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/refresh', [AuthController::class, 'refreshToken']);
 Route::post('/logout', [AuthController::class, 'logout']);
 
-Route::post('/videos/{id}', [VideoController::class, 'store']);
-Route::get('/videos', [VideoController::class, 'index']);
-Route::delete('/videos/{id}', [VideoController::class, 'destroy']);
-Route::put('/videos/{id}', [VideoController::class, 'update']);
 
 Route::middleware('auth:sanctum')->group(function () {
         Route::get('/courses', [CourseController::class, 'index']);
@@ -54,7 +51,15 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/courses/{id}', [CourseController::class, 'destroy']);
 });
 
+Route::post('/payment-intent', [PaymentController::class, 'createPaymentIntent']);
+Route::post('/charge', [PaymentController::class, 'processPayment']);
 
 
-// POST /api/V1/courses/{id}/videos : Ajouter une vidéo à un cours.
-// GET /api/V1/courses/{id}/videos : Lister les vidéos d'un cours
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('courses/{id}/videos', [VideoController::class, 'store']);  
+    Route::get('courses/{id}/videos', [VideoController::class, 'index']);   
+    Route::get('videos/{id}', [VideoController::class, 'show']);          
+    Route::put('videos/{id}', [VideoController::class, 'update']);        
+    Route::delete('videos/{id}', [VideoController::class, 'destroy']); 
+});

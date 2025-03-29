@@ -19,8 +19,9 @@ class CourseRequest extends FormRequest
             'description' => 'nullable|string',
             'duration' => 'required|integer|min:1',
             'difficulty_level' => 'required|string',
-            'status' => 'required|string',
+            'status' => 'required',
             'category_id' => 'required|exists:categories,id',
+            'teacher_id' => 'required',
             'tags' => 'nullable|array',
             'tags.*' => 'exists:tags,id',
         ];

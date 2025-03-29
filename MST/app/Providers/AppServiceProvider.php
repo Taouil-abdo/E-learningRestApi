@@ -4,10 +4,12 @@ namespace App\Providers;
 
 use OpenApi\Annotations as OA;
 use App\Repositories\UserRepository;
+use App\Repositories\VideoRepository;
 use App\Repositories\CourseRepository;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\EnrollmentRepository;
 use App\Repositories\UserRepositoryInterface;
+use App\Repositories\VideoRepositoryInterface;
 use App\Repositories\CourseRepositoryInterface;
 use App\Repositories\EnrollmentRepositoryInterface;
 
@@ -28,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(UserRepositoryInterface::class,UserRepository::class);  
         $this->app->bind(EnrollmentRepositoryInterface::class,EnrollmentRepository::class);
         $this->app->bind(CourseRepositoryInterface::class, CourseRepository::class);
+        $this->app->bind(VideoRepositoryInterface::class, VideoRepository::class);
     }
     
     /**
